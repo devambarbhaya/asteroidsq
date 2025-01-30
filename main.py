@@ -10,7 +10,8 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-
+    font = pygame.font.Font(None, 36)
+    
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
@@ -24,6 +25,7 @@ def main():
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     dt = 0
+    score = 0
 
     while True:
         for event in pygame.event.get():
@@ -41,15 +43,16 @@ def main():
                 if asteroid.collides_with(shot):
                     asteroid.split()
                     shot.kill()
+                    score += 1
 
         screen.fill("black")
+        score_text = font.render(f"Score: {score}", True, "white")
+        screen.blit(score_text, (10, 10))
 
         for obj in drawable:
             obj.draw(screen)
 
         pygame.display.flip()
-
-        # limit the framerate to 60 FPS
         dt = clock.tick(60) / 1000
 
 
